@@ -1,0 +1,28 @@
+#http://www.weather.com.cn/weather/101220101.shtml
+#<input id="hidden_title" value="05月16日08时 周一  晴转多云  26/13°C" type="hidden">
+defmodule Weather do
+	def get do
+		{status,response}=HTTPoison.get "http://www.weather.com.cn/weather/101220101.shtml"
+	    IO.puts status
+	    #IO.inspect response.headers
+	    IO.puts response.body
+	    #[{"Date",date},_]=response.headers
+	    Enum.each response.headers,fn 
+	    	{"Date",date} -> 
+	    		IO.puts date
+	    	_ ->
+	    		nil 
+	    end
+	    [{"Date",date}|_]=response.headers
+	    IO.inspect date
+	    a=Regex.run ~r/.*value=".+".*/,response.body
+	    b=Regex.run ~r/var hour3data={.+}/,response.body
+	    c=Regex.run ~r/.*{"weatherinfo":{.*}}.*/,response.body
+	    IO.inspect b
+	    #{status,response}
+	end
+    def proc do
+        get
+    end
+end
+Weather.get
