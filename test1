@@ -1,0 +1,46 @@
+defmodule Recursion do
+	def recursion 0,num do
+		IO.puts "Recursion end , Task: #{num} is done"
+		"this is Task#{num}'s return data"
+		#num
+	end
+
+    def recursion count,num do
+	    IO.puts "Task:#{num} now count=#{count}"
+	    count=count-1
+	    :timer.sleep 200
+	    recursion count,num
+	end
+
+	def recursion do
+		#recursion 10
+		IO.puts "anything"
+	end
+
+end
+factory=fn st,ed ->            
+   			wait=Enum.map st..ed,fn x ->
+   				Task.async fn ->Recursion.recursion x,x end
+  			end
+			Enum.each wait,fn x->
+				a=Task.await x
+				#IO.inspect wait
+				#IO.puts count
+				#IO.puts "the return is #{} and count=#{count} #{any}"
+				IO.inspect a
+				#any=any+1
+				# fun.(10,fun,any)	
+			end
+		end 	
+factory.(10,1)
+
+wait=Task.async __MODULE__,factory,[20,factory]
+a=Task.await wait
+
+a=Enum.map 1..10,fn x-> 
+	Task.async  fn ->HTTPoison.get "www.baidu.com"
+	end
+end
+Enum.each a,fn x ->
+Task.await x
+end
